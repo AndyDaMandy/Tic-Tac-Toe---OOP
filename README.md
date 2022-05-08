@@ -1,0 +1,1 @@
+This is a simple Ruby Tic Tac Toe project to practice OOP
