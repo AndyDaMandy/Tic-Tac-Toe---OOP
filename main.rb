@@ -22,9 +22,8 @@ class Game
   end
   def turn_order
     decide_turn
-    coin_flip
     player = true
-    coin_flip == 1 ? player = true : player = false
+    coin == 0 ? player = true : player = false
     player == true ? player_first : computer_first
   end
 end
@@ -43,6 +42,7 @@ def play
   game = Game.new
   board = Board.new
   game.start
+  game.coin_flip
   game.turn_order
 end
 play
