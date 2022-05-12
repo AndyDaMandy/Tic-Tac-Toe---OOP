@@ -16,13 +16,13 @@ end
 
 class Game
   include GameText
-  coin = 0
   def coin_flip
-   coin = rand(1)
+   rand(1)
   end
   def turn_order
     decide_turn
     player = true
+    coin = coin_flip
     coin == 0 ? player = true : player = false
     player == true ? player_first : computer_first
   end
@@ -42,7 +42,6 @@ def play
   game = Game.new
   board = Board.new
   game.start
-  game.coin_flip
   game.turn_order
 end
 play
