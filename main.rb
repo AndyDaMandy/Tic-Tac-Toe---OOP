@@ -23,6 +23,10 @@ end
 class Game
   include GameText
   @player = true
+  @player_score = []
+  @ai_score = []
+  @player_win = false
+  @ai_win = false
   def coin_flip
    rand(2)
   end
@@ -44,13 +48,17 @@ class Game
     if @player == true
       player_select
       input = gets
+      
+    end
+  end
+  def game_loop
   end
 end
 
 #holds the cells, winning combos
 class Board
       WIN_COMBO = [[1, 5, 9], [1, 2, 3], [2, 5, 8], [1, 4, 7], [3, 6, 9], [3, 5, 7], [4, 5, 6], [7, 8, 9]]  
-  attr_accessor :WIN_COMBO, :initialize
+  attr_accessor :WIN_COMBO, :initialize, :cells
    def initialize
     @cells = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   end 
@@ -66,5 +74,6 @@ def play
   game.start
   game.turn_order
   board.view_board
+  game.turn
 end
 play
