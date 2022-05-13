@@ -52,15 +52,16 @@ class Game
     if @player == true
       player_select
       input = gets
-      if input arr.include? input == false
+      if arr.include? input.to_i == false
         cannot_be
         player_select
         input = gets
-      end
-        arr[input] = "X"
-        @player_score.push(input)
+      else
+        arr[input.to_i] = "X"
+        player_score.push(input)
         puts "you selected #{input}"
         Board.view_board
+      end
     else
       ai_select
       ai_choice = rand(9)
@@ -68,8 +69,8 @@ class Game
         ai_choice = rand(9)
       end
       puts "AI selected #{ai_choice}"
-      @ai_score.push(input)
-      arr[input] = "O"
+      ai_score.push(ai_choice)
+      arr[ai_choice] = "O"
       Board.view_board
     end
 end
