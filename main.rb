@@ -77,9 +77,27 @@ class Game
       @board.view_board
     end
 end
-  def game_loop
-
+def check_win
+  player_check = false
+  ai_check = false
+  @board.WIN_COMBO.each |n|
+    if player_score.include? n[0] && player_score.include? n[1] && player_score.include? n[2]
+      player_check = true
+      player_win = true
+      puts "You won!"
+    elsif ai_score.include? n[0] && ai_score.include? n[1] && ai_score.include? n[2]
+      ai_check = true
+      player_win = true
+      puts "The AI won!"
+    end
   end
+end
+  def game_loop(x)
+    while player_win == false && ai_win == false
+      switch_turns
+      check_win
+      turn.x
+    end
 end
 
 #holds the cells, winning combos
@@ -102,6 +120,7 @@ def play
   game.turn_order
   game.board.view_board
   game.turn(game.board.cells)
+  game.game_loop(game.board.cells)
   #board.view_board
   #game.turn(board.cells)
 end
