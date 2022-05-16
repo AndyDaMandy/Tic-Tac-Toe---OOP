@@ -78,17 +78,20 @@ class Game
     end
 end
 def check_win
+  win = [[1, 5, 9], [1, 2, 3], [2, 5, 8], [1, 4, 7], [3, 6, 9], [3, 5, 7], [4, 5, 6], [7, 8, 9]]
   player_check = false
   ai_check = false
-  @board.WIN_COMBO.each |n|
+  win.each do |n|
     if player_score.include? n[0] && player_score.include? n[1] && player_score.include? n[2]
       player_check = true
       player_win = true
       puts "You won!"
+      break
     elsif ai_score.include? n[0] && ai_score.include? n[1] && ai_score.include? n[2]
       ai_check = true
       player_win = true
       puts "The AI won!"
+      break
     end
   end
 end
@@ -103,8 +106,7 @@ end
 #holds the cells, winning combos
 class Board
   attr_accessor :cells
-  attr_reader :view_board, :WIN_COMBO
-      WIN_COMBO = [[1, 5, 9], [1, 2, 3], [2, 5, 8], [1, 4, 7], [3, 6, 9], [3, 5, 7], [4, 5, 6], [7, 8, 9]]  
+  attr_reader :view_board 
    def initialize
     @cells = [1, 2, 3, 4, 5, 6, 7, 8, 9]
   end 
