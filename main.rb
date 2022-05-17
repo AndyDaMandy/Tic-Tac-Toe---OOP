@@ -1,5 +1,6 @@
 #holds game text functions to display text
 module Win
+  attr_reader :WIN
   WIN = [[1, 5, 9], [1, 2, 3], [2, 5, 8], [1, 4, 7], [3, 6, 9], [3, 5, 7], [4, 5, 6], [7, 8, 9]]
 end
 module GameText
@@ -83,17 +84,13 @@ class Game
     end
 end
 def check_win
-  player_check = false
-  ai_check = false
   for n in WIN do
     if @player.score.include?(n[0]) && @player.score.include?(n[1]) && @player.score.include?(n[2])
-      player_check = true
-      player_win = true
+      @player_win = true
       puts "You won!"
       break
     elsif @ai.score.include?(n[0]) && @ai.score.include?(n[1]) && @ai.score.include?(n[2])
-      ai_check = true
-      player_win = true
+      @ai_win = true
       puts "The AI won!"
       break
     end
@@ -101,10 +98,12 @@ def check_win
 end
   def game_loop(x)
     while player_win == false && ai_win == false
-      switch_turns
       check_win
-      turn.x
+      switch_turns
+      turn(x)
+      check_win
     end
+    check_win
   end
 end
 class Player
