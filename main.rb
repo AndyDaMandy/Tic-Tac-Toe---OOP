@@ -1,4 +1,7 @@
 #holds game text functions to display text
+module Win
+  WIN = [[1, 5, 9], [1, 2, 3], [2, 5, 8], [1, 4, 7], [3, 6, 9], [3, 5, 7], [4, 5, 6], [7, 8, 9]]
+end
 module GameText
     def start
       puts "Beginning game...."
@@ -26,11 +29,11 @@ end
 class Game
   attr_accessor :player, :player_score, :ai_score, :player_win, :ai_win, :board
   include GameText
+  include Win
   def initialize
   @board = Board.new
-  @player = true
-  @player_score = []
-  @ai_score = []
+  @player = Player.new
+  @ai = Computer.new
   @player_win = false
   @ai_win = false
   end
@@ -41,18 +44,20 @@ class Game
     decide_turn
     player = true
     coin = coin_flip
-    coin == 0 ? @player = true : @player = false
-    @player == true ? player_first : computer_first
+    coin == 0 ? @player.turn = true : @player.turn = false
+    @player.turn == true ? player_first : computer_first
   end
   def switch_turns
-    if @player == true
-      @player = false
+    if @player.turn == true
+      @player.turn = false
+      @ai.turn = true
     else
-      @player = true
+      @player.turn = true
+      @ai.turn = false
     end
   end
   def turn(arr)
-    if @player == true
+    if @player.turn == true
       player_select
       input = gets
       if arr.include? input.to_i == false
@@ -61,7 +66,7 @@ class Game
         input = gets
       else
         arr[input.to_i - 1] = "X"
-        player_score.push(input)
+        @player.score.push(input)
         puts "you selected #{input}"
         @board.view_board
       end
@@ -72,22 +77,21 @@ class Game
         ai_choice = rand(9)
       end
       puts "AI selected #{ai_choice}"
-      ai_score.push(ai_choice)
+      @ai.score.push(ai_choice)
       arr[ai_choice - 1] = "O"
       @board.view_board
     end
 end
 def check_win
-  win = [[1, 5, 9], [1, 2, 3], [2, 5, 8], [1, 4, 7], [3, 6, 9], [3, 5, 7], [4, 5, 6], [7, 8, 9]]
   player_check = false
   ai_check = false
-  win.each do |n|
-    if player_score.include? n[0] && player_score.include? n[1] && player_score.include? n[2]
+  for n in WIN do
+    if @player.score.include?(n[0]) && @player.score.include?(n[1]) && @player.score.include?(n[2])
       player_check = true
       player_win = true
       puts "You won!"
       break
-    elsif ai_score.include? n[0] && ai_score.include? n[1] && ai_score.include? n[2]
+    elsif @ai.score.include?(n[0]) && @ai.score.include?(n[1]) && @ai.score.include?(n[2])
       ai_check = true
       player_win = true
       puts "The AI won!"
@@ -101,8 +105,22 @@ end
       check_win
       turn.x
     end
+  end
 end
-
+class Player
+  attr_accessor :score, :turn
+  def initialize
+    @score = []
+    @turn = false
+  end
+end
+class Computer 
+  attr_accessor :score, :turn
+  def initialize
+    @score = []
+    @turn = false
+  end
+end
 #holds the cells, winning combos
 class Board
   attr_accessor :cells
