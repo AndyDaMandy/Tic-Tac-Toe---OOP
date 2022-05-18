@@ -38,6 +38,7 @@ class Game
   @ai = Computer.new
   @player_win = false
   @ai_win = false
+  @winner = false
   end
   def coin_flip
    rand(2)
@@ -68,14 +69,14 @@ class Game
         input = gets
       end
         arr[input.to_i - 1] = "X"
-        @player.score.push(input)
+        @player.score.push(input.to_i)
         puts "you selected #{input}"
         @board.view_board
     else
       ai_select
-      ai_choice = rand(9)
+      ai_choice = rand(10)
       while arr.include?(ai_choice) == false
-        ai_choice = rand(9)
+        ai_choice = rand(10)
       end
       puts "AI selected #{ai_choice}"
       @ai.score.push(ai_choice)
@@ -84,24 +85,26 @@ class Game
     end
 end
 def check_win
-  if (@board.cells.include?(1) == false && @board.cells.include?(2) == false && @board.cells.include?(3) == false && @board.cells.include?(4) == false && @board.cells.include?(5) == false && @board.cells.include?(6) == false && @board.cells.include?(7) == false && @board.cells.include?(8) == false && @board.cells.include?(9) == false)
-    puts "It's a tie, nobody wins!"
-    @ai_win = true
-  end
   WIN.each do |n|
     if @player.score.include?(n[0]) && @player.score.include?(n[1]) && @player.score.include?(n[2])
+      @winner = true
       @player_win = true
       puts "You won!"
       break
     elsif @ai.score.include?(n[0]) && @ai.score.include?(n[1]) && @ai.score.include?(n[2])
+      @winner = true
       @ai_win = true
       puts "The AI won!"
       break
     end
   end
+  if (@board.cells.include?(1) == false && @board.cells.include?(2) == false && @board.cells.include?(3) == false && @board.cells.include?(4) == false && @board.cells.include?(5) == false && @board.cells.include?(6) == false && @board.cells.include?(7) == false && @board.cells.include?(8) == false && @board.cells.include?(9) == false)
+    puts "It's a tie, nobody wins!"
+    @winner = true
+  end
 end
   def game_loop(x)
-    while @player_win == false && @ai_win == false
+    while @winner == false
       switch_turns
       turn(x)
       check_win
