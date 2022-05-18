@@ -1,3 +1,4 @@
+require 'pry-byebug'
 #holds game text functions to display text
 module Win
   attr_reader :WIN
@@ -84,7 +85,7 @@ class Game
     end
 end
 def check_win
-  for n in WIN do
+  WIN.each do |n|
     if @player.score.include?(n[0]) && @player.score.include?(n[1]) && @player.score.include?(n[2])
       @player_win = true
       puts "You won!"
@@ -98,12 +99,10 @@ def check_win
 end
   def game_loop(x)
     while player_win == false && ai_win == false
-      check_win
       switch_turns
       turn(x)
       check_win
     end
-    check_win
   end
 end
 class Player
