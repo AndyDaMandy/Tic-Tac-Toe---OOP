@@ -62,20 +62,19 @@ class Game
     if @player.turn == true
       player_select
       input = gets
-      if arr.include? input.to_i == false
+      while arr.include?(input.to_i) == false
         cannot_be
         player_select
         input = gets
-      else
+      end
         arr[input.to_i - 1] = "X"
         @player.score.push(input)
         puts "you selected #{input}"
         @board.view_board
-      end
     else
       ai_select
       ai_choice = rand(9)
-      while arr.include? ai_choice == false
+      while arr.include?(ai_choice) == false
         ai_choice = rand(9)
       end
       puts "AI selected #{ai_choice}"
@@ -85,6 +84,10 @@ class Game
     end
 end
 def check_win
+  if (@board.cells.include?(1) == false && @board.cells.include?(2) == false && @board.cells.include?(3) == false && @board.cells.include?(4) == false && @board.cells.include?(5) == false && @board.cells.include?(6) == false && @board.cells.include?(7) == false && @board.cells.include?(8) == false && @board.cells.include?(9) == false)
+    puts "It's a tie, nobody wins!"
+    @ai_win = true
+  end
   WIN.each do |n|
     if @player.score.include?(n[0]) && @player.score.include?(n[1]) && @player.score.include?(n[2])
       @player_win = true
@@ -98,7 +101,7 @@ def check_win
   end
 end
   def game_loop(x)
-    while player_win == false && ai_win == false
+    while @player_win == false && @ai_win == false
       switch_turns
       turn(x)
       check_win
